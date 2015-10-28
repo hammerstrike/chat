@@ -1,0 +1,27 @@
+<div class="row">
+    <form class="col s12" id="frmUser">
+      <div class="row">
+        <div class="input-field col s6 offset-s3">
+          <input id="user_name" type="text" class="validate">
+          <label for="user_name">UserName</label>
+          <button class="btn waves-effect waves-light" type="submit">GO ---> </button>
+        </div>
+      </div>
+    </form>
+    <div id="chatContainer">
+      <div class="col s6 border">
+        <div id="chatwindow" class="">
+        </div>
+        <form class="col s12" id="frmChat">
+          <input id="message" type="text" placeholder="type something...">
+          <button class="btn waves-effect waves-light" type="submit">Say</button>
+        </form>
+      </div>
+      <div class="col s5 border offset-s1">
+        <h5>Users</h5>
+        <div id="users" class="">
+
+        </div>
+      </div>
+    </div>
+  </div>

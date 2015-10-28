@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simple Chat.IO by hammerStrike</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <!-- Custom Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+    <style>
+      .border{
+        border:1px solid #aaa;
+        border-radius: 5px;
+      
+      }
+      #chatContainer{display: none;}
+      #chatwindow,#user{
+
+      }
+    </style>
+
+</head>
+
+<body>
+  <div class="container">
+    {{{body}}}
+  </div>
+  <!-- Js Files -->
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script>
+  (function(){
+    var socket = io.connect("http://localhost:8080");
+    var $chatwindow = $('#chatwindow');
+    var $frmChat    = $('#frmChat');
+    var $frmUser    = $('#frmUser');
+
+    $frmUser.submit(function(e){
+      e.preventDefault();
+      socket.emit('new user',$('#user_name').val(),function(data){
+        if(data){
+          $('#frmUser').hide(0);
+          $('#chatContainer').fadeIn(300);
+        }else{
+          alert('Username already taken');
+        }
+      });
+    })
+
+    $frmChat.submit(function(e){
+      e.preventDefault();
+      socket.emit('send message',$('#message').val());
+      $('#message').val('');
+    });
+    socket.on('usernames',function (data) {
+      var html = '';
+      for(var i = 0; i<data.length;i++){
+        html += data[i]+'<br>';
+      }
+      $('#users').html(html);
+    })
+    socket.on('new message',function (data) {
+      $chatwindow.append('<strong>'+data.user+'</strong>: '+data.msg+'<br>');
+    })
+  })();
+  </script>
+</body>
+</html>
